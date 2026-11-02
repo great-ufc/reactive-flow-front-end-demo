@@ -6,6 +6,29 @@ The authors of the paper and of this demo are Wilson Castro, Rossana M. C. Andra
 
 The file src/pattern.ts holds the four listings of the paper, in the order they appear there. The only addition is setRender, because the paper's interface calls a render function that the paper does not define. The file src/main.ts builds the page around the listings.
 
+## The pattern
+
+Reactive Flow Front-End is a design pattern for interactive front-end applications. It is meant for applications in which the screen, the business rules, the state and the calls to external services pile up in the same components. In such code, a change to one of them often breaks another.
+
+The pattern gives each of these concerns its own role.
+
+| Role | What it does |
+| --- | --- |
+| Reactive Interface | Draws the screen from the current state and turns each user action into a descriptive event. It never calls services or changes the state itself. |
+| Flow Orchestrator | Receives each event, decides what happens next, applies events to the state and calls the infrastructure when data is needed. |
+| State Modules | Hold the domain model and the status of the operation in progress. The state changes only through pure transitions. |
+| Infrastructure Adapters | Talk to APIs and other external services behind a stable contract. |
+
+Information moves in one direction only. Events go down from the interface to the orchestrator, and the only path back up is the notification that the state has changed. Because of this, every screen can be traced back to the events that produced it. The business rules can also be tested without a network or a browser.
+
+The pattern pays off in medium and large applications, and in teams where several people change the same front-end. In a small application, a direct call and a local variable are simpler. Flux, Redux, NgRx, the Elm Architecture and BLoC are well-known architectures that follow the same principles.
+
+## The paper
+
+Castro, W., Andrade, R. M. C., Carvalho, D. R. A., Freitas, T. N., de Meneses, R. S. R., Alves, G. B. and Oliveira, P. A. M. "Reactive Flow Front-End: A Design Pattern for Event-Driven, State-Centric Front-End Architectures". In Proceedings of the 33rd Conference on Pattern Languages of Programs (PLoP 2026).
+
+The paper is not available online yet. This section will link to it once the proceedings are published.
+
 ## How to run
 
 Install the dependencies and start the development server.
