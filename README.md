@@ -8,7 +8,7 @@ The file src/pattern.ts holds the four listings of the paper, in the order they 
 
 ## The pattern
 
-Reactive Flow Front-End is a design pattern for interactive front-end applications. It is meant for applications in which the screen, the business rules, the state and the calls to external services pile up in the same components. In such code, a change to one of them often breaks another.
+Reactive Flow Front-End is a design pattern for interactive front-end applications. It suits applications where the screen, the business rules, the state and the calls to external services pile up in the same components. In such code, a change to one of them often breaks another.
 
 The pattern gives each of these concerns its own role.
 
