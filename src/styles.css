@@ -8,6 +8,10 @@
   --role-adapter: #e47764;
   --role-api: #eba331;
 
+  /* GREat, taken from the laboratory's logo. */
+  --great-orange: #e29142;
+  --great-blue: #186090;
+
   --background: #ffffff;
   --surface: #fafafa;
   --border: #eaeaea;
@@ -29,6 +33,14 @@
   color: var(--foreground);
   background: var(--background);
   -webkit-font-smoothing: antialiased;
+}
+
+/* A thin band in the GREat colours along the top edge. */
+body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--great-orange), var(--great-blue));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -125,9 +137,48 @@ pre {
   backdrop-filter: saturate(180%) blur(8px);
 }
 
+.topbar-start {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-strong);
+}
+
 .topbar-title {
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+/* The laboratory's name in its own typeface and blue. */
+.great-mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--great-blue);
+  font-family: 'Montserrat', var(--sans);
+  font-weight: 700;
+}
+
+.great-mark:hover {
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .great-mark {
+    color: #6fb0e0;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar-divider,
+  .topbar-title {
+    display: none;
+  }
 }
 
 .topbar-link {
@@ -662,4 +713,36 @@ pre.changed {
 
 .page-footer p {
   max-width: 80ch;
+}
+
+.great-credit {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--great-orange);
+  border-radius: 10px;
+  color: var(--secondary);
+  max-width: 80ch;
+}
+
+.great-credit:hover {
+  border-color: var(--border-strong);
+  border-left-color: var(--great-orange);
+  text-decoration: none;
+}
+
+.great-credit strong {
+  display: block;
+  color: var(--great-blue);
+  font-family: 'Montserrat', var(--sans);
+  font-size: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .great-credit strong {
+    color: #6fb0e0;
+  }
 }
