@@ -13,7 +13,7 @@
   --great-blue: #186090;
 
   --background: #ffffff;
-  --surface: #fafafa;
+  --surface: #f8f7f3;
   --border: #eaeaea;
   --border-strong: #d4d4d4;
   --foreground: #171717;
@@ -26,7 +26,7 @@
   --sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
   --mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  color-scheme: light dark;
+  color-scheme: light;
   font-family: var(--sans);
   font-size: 15px;
   line-height: 1.6;
@@ -41,21 +41,6 @@ body::before {
   display: block;
   height: 3px;
   background: linear-gradient(90deg, var(--great-orange), var(--great-blue));
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --surface: #111111;
-    --border: #2e2e2e;
-    --border-strong: #454545;
-    --foreground: #ededed;
-    --secondary: #a1a1a1;
-    --accent: #7fa9ee;
-    --action: #9a88e0;
-    --action-hover: #ad9df0;
-    --error: #ff6166;
-  }
 }
 
 * {
@@ -166,12 +151,6 @@ pre {
 
 .great-mark:hover {
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .great-mark {
-    color: #6fb0e0;
-  }
 }
 
 @media (max-width: 560px) {
@@ -739,10 +718,4 @@ pre.changed {
   color: var(--great-blue);
   font-family: 'Montserrat', var(--sans);
   font-size: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .great-credit strong {
-    color: #6fb0e0;
-  }
 }
