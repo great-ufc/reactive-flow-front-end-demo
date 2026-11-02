@@ -1,5 +1,5 @@
-/* Neutral black and white base with the Geist typefaces. The only colours are
-   those of the roles, the same as in the paper's figures. */
+/* The page takes its colours from the four roles of the paper's figures:
+   purple for actions, blue for links and focus, green for state. */
 :root {
   --role-user: #b9af8c;
   --role-ui: #9180d5;
@@ -14,7 +14,9 @@
   --border-strong: #d4d4d4;
   --foreground: #171717;
   --secondary: #666666;
-  --accent: #0070f3;
+  --accent: #3f76c9;
+  --action: #7a66c7;
+  --action-hover: #6552b3;
   --error: #e5484d;
 
   --sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
@@ -37,7 +39,9 @@
     --border-strong: #454545;
     --foreground: #ededed;
     --secondary: #a1a1a1;
-    --accent: #3291ff;
+    --accent: #7fa9ee;
+    --action: #9a88e0;
+    --action-hover: #ad9df0;
     --error: #ff6166;
   }
 }
@@ -51,7 +55,12 @@ body {
 }
 
 h1 {
-  margin: 12px 0 0;
+  width: fit-content;
+  margin: 0;
+  background: linear-gradient(90deg, var(--role-ui), var(--role-flow) 55%, var(--role-state));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-weight: 700;
   line-height: 1.05;
@@ -130,7 +139,8 @@ pre {
 }
 
 .topbar-link:hover {
-  border-color: var(--border-strong);
+  border-color: var(--action);
+  color: var(--action);
   text-decoration: none;
 }
 
@@ -146,17 +156,6 @@ pre {
 .page-header {
   padding-top: 64px;
   padding-bottom: 8px;
-}
-
-.badge {
-  display: inline-block;
-  margin: 0;
-  padding: 2px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  color: var(--secondary);
-  font-family: var(--mono);
-  font-size: 0.75rem;
 }
 
 .subtitle {
@@ -193,6 +192,7 @@ pre {
   align-items: center;
   padding: 16px 16px 0;
   border: 1px solid var(--border);
+  border-top: 3px solid var(--role);
   border-bottom: 0;
   border-radius: 10px 10px 0 0;
   font-weight: 600;
@@ -360,19 +360,19 @@ button:disabled {
 
 /* The Add buttons are the main action, so they are solid. */
 .product button {
-  border-color: var(--foreground);
-  background: var(--foreground);
-  color: var(--background);
+  border-color: var(--action);
+  background: var(--action);
+  color: #ffffff;
 }
 
 .product button:hover:not(:disabled) {
-  border-color: var(--foreground);
-  background: color-mix(in srgb, var(--foreground) 82%, var(--background));
+  border-color: var(--action-hover);
+  background: var(--action-hover);
 }
 
 button[aria-pressed='true'] {
-  border-color: var(--foreground);
-  background: var(--surface);
+  border-color: var(--role-state);
+  background: color-mix(in srgb, var(--role-state) 14%, var(--background));
 }
 
 :focus-visible {
@@ -397,11 +397,11 @@ label output {
 input[type='range'] {
   width: 100%;
   margin-top: 8px;
-  accent-color: var(--foreground);
+  accent-color: var(--action);
 }
 
 input[type='checkbox'] {
-  accent-color: var(--foreground);
+  accent-color: var(--action);
 }
 
 select {

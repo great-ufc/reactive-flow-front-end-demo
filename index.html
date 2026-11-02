@@ -16,7 +16,6 @@
     </nav>
 
     <header class="page-header">
-      <p class="badge">PLoP 2026</p>
       <h1>Reactive Flow Front-End</h1>
       <p class="subtitle">A runnable example for the pattern paper presented at PLoP 2026.</p>
     </header>
@@ -37,19 +36,19 @@
 
       <h2>The four roles</h2>
       <dl class="roles">
-        <dt><span class="swatch role-ui"></span>Reactive Interface</dt>
+        <dt class="role-ui"><span class="swatch"></span>Reactive Interface</dt>
         <dd>
           Draws the screen from the current state and turns each click into an
           event. It never calls the server and never changes the state itself.
         </dd>
 
-        <dt><span class="swatch role-flow"></span>Flow Orchestrator</dt>
+        <dt class="role-flow"><span class="swatch"></span>Flow Orchestrator</dt>
         <dd>
           Receives every event and decides what happens next. It applies the event
           to the state and, when data is needed, asks the infrastructure for it.
         </dd>
 
-        <dt><span class="swatch role-state"></span>State Modules</dt>
+        <dt class="role-state"><span class="swatch"></span>State Modules</dt>
         <dd>
           Hold the state of the application. Here that is the cart, which is the
           domain model, and the status of the operation in progress. The state only
@@ -57,7 +56,7 @@
           state.
         </dd>
 
-        <dt><span class="swatch role-adapter"></span>Infrastructure Adapters</dt>
+        <dt class="role-adapter"><span class="swatch"></span>Infrastructure Adapters</dt>
         <dd>
           Talk to the server behind a fixed contract. The rest of the application
           does not know which address is called or how the answer is formatted.
