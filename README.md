@@ -2,6 +2,8 @@
 
 A runnable version of the reference implementation in the paper "Reactive Flow Front-End", presented at PLoP 2026. It uses TypeScript and the browser's own APIs, without a UI framework.
 
+The page runs online at https://great-ufc.github.io/reactive-flow-front-end-demo/.
+
 The authors of the paper and of this demo are Wilson Castro, Rossana M. C. Andrade, Denise R. A. Carvalho, Tobias N. Freitas, Roberto S. R. de Meneses and Gabriel B. Alves, from the Federal University of Ceará (UFC), and Pedro Almir M. Oliveira, from the Federal Institute of Maranhão (IFMA).
 
 The file src/pattern.ts holds the four listings of the paper, in the order they appear there. The only addition is setRender, because the paper's interface calls a render function that the paper does not define. The file src/main.ts builds the page around the listings.
