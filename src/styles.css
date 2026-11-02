@@ -1,4 +1,5 @@
-/* Colours of the roles, the same as in the paper's figures. */
+/* Colours of the roles, the same as in the paper's figures. They are the only
+   colours on the page besides ink and paper. */
 :root {
   --role-user: #b9af8c;
   --role-ui: #9180d5;
@@ -7,29 +8,34 @@
   --role-adapter: #e47764;
   --role-api: #eba331;
 
-  --page: #f4f5f8;
-  --surface: #ffffff;
-  --code: #f6f7f9;
-  --line: #d9dfe7;
-  --ink: #202a3a;
-  --muted: #526174;
-  --error: #c2412d;
+  --paper: #fdfcf9;
+  --code-background: #f3f1ec;
+  --rule: #d8d4cc;
+  --ink: #1f1f1f;
+  --quiet: #5d5a55;
+  --link: #2b5c9e;
+  --error: #b3361f;
+
+  --text-font: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
+  --code-font: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   color-scheme: light dark;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--text-font);
+  font-size: 17px;
+  line-height: 1.55;
   color: var(--ink);
-  background: var(--page);
+  background: var(--paper);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --page: #11161f;
-    --surface: #1a212c;
-    --code: #222b38;
-    --line: #333f50;
-    --ink: #e6eaf0;
-    --muted: #a3afbf;
-    --error: #f08a78;
+    --paper: #1b1a18;
+    --code-background: #262420;
+    --rule: #3d3a35;
+    --ink: #e9e6e0;
+    --quiet: #aaa59c;
+    --link: #8fb4e8;
+    --error: #ef8a76;
   }
 }
 
@@ -38,64 +44,96 @@
 }
 
 body {
-  margin: 0;
-  padding: 32px 24px;
-  max-width: 1600px;
-  margin-inline: auto;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 24px 56px;
 }
 
 h1 {
-  margin: 4px 0 8px;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  letter-spacing: -0.03em;
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.15;
 }
 
 h2 {
-  margin: 0 0 12px;
-  font-size: 1.15rem;
+  margin: 0 0 8px;
+  font-size: 1.25rem;
 }
 
 h3 {
-  margin: 22px 0 8px;
-  font-size: 0.9rem;
+  margin: 20px 0 6px;
+  font-size: 1rem;
 }
 
-p {
-  line-height: 1.6;
+a {
+  color: var(--link);
+}
+
+pre,
+code {
+  font-family: var(--code-font);
+  font-size: 0.8rem;
 }
 
 pre {
   margin: 0;
-  padding: 12px;
+  padding: 10px 12px;
   overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--code);
-  font-size: 0.8rem;
+  border: 1px solid var(--rule);
+  background: var(--code-background);
 }
 
-.muted {
-  color: var(--muted);
-  font-size: 0.82rem;
+.note {
+  margin: 0 0 12px;
+  color: var(--quiet);
+  font-size: 0.92rem;
 }
 
-.eyebrow {
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
+/* Header and introduction, set as running text */
 .page-header {
-  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--ink);
 }
 
-.page-footer {
-  margin-top: 24px;
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--quiet);
+  font-style: italic;
 }
 
-/* Each role class sets --role, which tags, chips and diagram boxes use. */
+.introduction {
+  max-width: 68ch;
+  margin: 28px 0 40px;
+}
+
+.introduction h2 {
+  margin-top: 28px;
+}
+
+.roles dt {
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+.roles dd {
+  margin: 2px 0 0 22px;
+}
+
+.swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 10px;
+  border: 1px solid var(--role);
+  background: color-mix(in srgb, var(--role) 35%, var(--paper));
+}
+
+.steps li {
+  margin-bottom: 10px;
+}
+
+/* Each role class sets --role, used by swatches, chips and diagram boxes. */
 .role-user { --role: var(--role-user); }
 .role-ui { --role: var(--role-ui); }
 .role-flow { --role: var(--role-flow); }
@@ -103,12 +141,14 @@ pre {
 .role-adapter { --role: var(--role-adapter); }
 .role-api { --role: var(--role-api); }
 
-/* Three columns on wide screens, two on tablets, one on phones. */
+/* The running example. Three columns on wide screens, two on tablets, one on
+   phones. Sections are separated by rules, not boxes. */
 .layout {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(340px, 1.3fr) minmax(280px, 1fr);
-  gap: 20px;
+  grid-template-columns: minmax(250px, 1fr) minmax(320px, 1.35fr) minmax(250px, 1fr);
+  gap: 0 36px;
   align-items: start;
+  border-top: 1px solid var(--rule);
 }
 
 .shop-panel { grid-column: 1; grid-row: 1; }
@@ -117,7 +157,7 @@ pre {
 .controls-panel { grid-column: 1; grid-row: 2; }
 .trace-panel { grid-column: 2; grid-row: 2; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1050px) {
   .layout {
     grid-template-columns: 1fr 1fr;
   }
@@ -129,9 +169,9 @@ pre {
   .trace-panel { grid-column: 1 / -1; grid-row: auto; }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 700px) {
   body {
-    padding: 20px 16px;
+    padding: 24px 16px 40px;
   }
 
   .layout {
@@ -143,84 +183,75 @@ pre {
   }
 }
 
-/* Panels */
 .panel {
   min-width: 0;
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--panel-accent, var(--line));
-  border-radius: 14px;
-  background: var(--surface);
+  padding: 24px 0;
 }
 
-.shop-panel { --panel-accent: var(--role-ui); }
-.architecture-panel { --panel-accent: var(--role-flow); }
-.state-panel { --panel-accent: var(--role-state); }
+.controls-panel,
+.trace-panel {
+  border-top: 1px solid var(--rule);
+}
 
 .panel-heading {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 12px;
 }
 
-.role-tag {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 3px 8px;
-  border: 1px solid var(--role);
-  border-radius: 20px;
-  background: color-mix(in srgb, var(--role) 16%, var(--surface));
-  font-size: 0.65rem;
-  vertical-align: middle;
+/* Form controls keep the system font, as they do in most applications. */
+button,
+select,
+input,
+label {
+  font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Form controls */
 button,
 select {
-  padding: 7px 12px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: var(--surface);
+  padding: 5px 12px;
+  border: 1px solid var(--quiet);
+  border-radius: 3px;
+  background: var(--paper);
   color: var(--ink);
-  font: inherit;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
 }
 
 button {
   cursor: pointer;
-  font-weight: 600;
 }
 
 button:hover:not(:disabled) {
-  border-color: var(--role-ui);
+  background: var(--code-background);
 }
 
 button:disabled {
   cursor: wait;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 button[aria-pressed='true'] {
-  border-color: var(--role-state);
-  background: color-mix(in srgb, var(--role-state) 18%, var(--surface));
+  border-color: var(--ink);
+  background: var(--code-background);
+  font-weight: 600;
 }
 
 :focus-visible {
-  outline: 3px solid var(--role-flow);
+  outline: 2px solid var(--link);
   outline-offset: 2px;
 }
 
 label {
   display: block;
-  margin-top: 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin-top: 14px;
+  font-size: 0.88rem;
 }
 
 label output {
   float: right;
-  font-weight: 400;
+  font-family: var(--code-font);
+  font-size: 0.8rem;
 }
 
 input[type='range'],
@@ -240,56 +271,53 @@ select {
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.88rem;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--rule);
 }
 
 .price {
-  color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 
 #cart-items {
+  margin: 0;
   padding-left: 20px;
-  font-size: 0.88rem;
-  line-height: 1.9;
 }
 
 .cart-total {
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
+  margin: 8px 0;
   font-weight: 700;
 }
 
-.status-badge {
-  padding: 10px 12px;
-  border: 1px solid var(--role-state);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--role-state) 14%, var(--surface));
-  font-size: 0.88rem;
+.status-line {
+  margin: 12px 0 0;
+  padding: 6px 10px;
+  border-left: 4px solid var(--role-state);
+  background: var(--code-background);
+  font-family: var(--code-font);
+  font-size: 0.82rem;
 }
 
 .status-loading {
-  border-color: var(--role-flow);
-  background: color-mix(in srgb, var(--role-flow) 14%, var(--surface));
+  border-left-color: var(--role-flow);
 }
 
 .status-error {
-  border-color: var(--error);
-  background: color-mix(in srgb, var(--error) 14%, var(--surface));
+  border-left-color: var(--error);
+  color: var(--error);
 }
 
-/* Architecture diagram */
+/* Diagram */
 #architecture-diagram {
   display: block;
   width: 100%;
   height: auto;
+  margin: 8px 0;
 }
 
 .role rect {
-  fill: color-mix(in srgb, var(--role) 15%, var(--surface));
+  fill: color-mix(in srgb, var(--role) 14%, var(--paper));
   stroke: var(--role);
   stroke-width: 1.5;
   transition: fill 0.2s, stroke-width 0.2s;
@@ -297,19 +325,19 @@ select {
 
 .role text {
   fill: var(--ink);
+  font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 13px;
-  font-weight: 600;
   text-anchor: middle;
 }
 
 .role.active rect {
-  fill: color-mix(in srgb, var(--role) 45%, var(--surface));
+  fill: color-mix(in srgb, var(--role) 50%, var(--paper));
   stroke-width: 3;
 }
 
 .connection {
   fill: none;
-  stroke: var(--line);
+  stroke: var(--rule);
   stroke-width: 2;
   transition: stroke 0.2s, stroke-width 0.2s;
 }
@@ -320,7 +348,7 @@ select {
 
 .connection.active {
   stroke: var(--ink);
-  stroke-width: 3.5;
+  stroke-width: 3;
 }
 
 .connection.notification.active {
@@ -328,31 +356,30 @@ select {
 }
 
 .animation-caption {
-  min-height: 2.6em;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--role-flow) 10%, var(--surface));
-  font-size: 0.88rem;
+  min-height: 2.4em;
+  margin: 0 0 4px;
+  font-family: var(--code-font);
+  font-size: 0.82rem;
 }
 
-/* Legend */
 .legend {
-  margin: 0;
+  margin: 8px 0 0;
   padding: 0;
   list-style: none;
-  font-size: 0.82rem;
+  color: var(--quiet);
+  font-size: 0.88rem;
 }
 
 .legend li {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 6px 0;
+  margin: 4px 0;
 }
 
 .legend-line {
-  width: 36px;
-  border-top: 3px solid var(--ink);
+  width: 32px;
+  border-top: 2px solid var(--ink);
 }
 
 .legend-line.notification {
@@ -370,12 +397,11 @@ details {
 
 summary {
   cursor: pointer;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .trace-list {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -383,14 +409,17 @@ summary {
 .trace-row {
   display: grid;
   grid-template-columns: 2em 5.5em 1fr;
-  gap: 4px 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.8rem;
+  gap: 2px 8px;
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--rule);
+  font-size: 0.85rem;
 }
 
 .trace-row strong {
   grid-column: 3;
+  font-family: var(--code-font);
+  font-size: 0.8rem;
+  font-weight: 400;
 }
 
 .message-number {
@@ -398,36 +427,53 @@ summary {
 }
 
 .elapsed {
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  color: var(--quiet);
+  font-family: var(--code-font);
+  font-size: 0.78rem;
 }
 
 .chip {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   margin-right: 4px;
-  border-radius: 50%;
   background: var(--role);
 }
 
 /* State */
+.state-source {
+  margin: 0 0 8px;
+  font-style: italic;
+}
+
 #event-history {
+  margin: 0;
   padding-left: 0;
   list-style: none;
 }
 
 #event-history li {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 #event-history button {
   width: 100%;
   margin-bottom: 4px;
+  font-family: var(--code-font);
+  font-size: 0.78rem;
   text-align: left;
 }
 
 pre.changed {
   border-color: var(--role-state);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--role-state) 35%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--role-state) 45%, transparent);
+}
+
+/* Footer */
+.page-footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  color: var(--quiet);
+  font-size: 0.88rem;
 }

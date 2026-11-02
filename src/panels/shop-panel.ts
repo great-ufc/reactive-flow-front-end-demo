@@ -62,8 +62,11 @@ export class ShopPanel {
   }
 
   private showStatus(state: CartState, failureReason: string): void {
-    this.statusBadge.className = `status-badge status-${state.status}`;
+    this.statusBadge.className = `status-line status-${state.status}`;
+
+    // Shown as the field it is in CartState, so it can be compared with Listing 1.
+    const field = `status: '${state.status}'`;
     this.statusBadge.textContent =
-      state.status === 'error' ? `error: ${failureReason}` : state.status;
+      state.status === 'error' ? `${field}. ${failureReason}` : field;
   }
 }

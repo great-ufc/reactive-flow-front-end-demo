@@ -23,11 +23,15 @@ The command npm run typecheck checks the types, and npm run build writes the sit
 
 ## What the page shows
 
-Shop shows the catalogue, cart, total and live flow status. Architecture follows messages through the six roles at the selected animation speed. Message trace groups the numbered messages by user action and records their relative times. State separates the domain model from flow status and lists every applied event. Controls set server latency, arm a request failure and change animation speed. The arrow legend explains calls, state notifications and replies.
+The page opens with a short explanation of the pattern, its four roles and a few things to try. Below it the example runs in five parts.
 
-Add Discontinued lamp, or select Fail the next request before adding another product, to see the error path. Select an event in Event history to see the state rebuilt by folding the paper's reducer over events 1..k. Back to live returns to the current state. The cart continues to show live state while the state panel shows a past transition. Clearing the message trace leaves event history intact.
+- The shop is the Reactive Interface. It has a catalogue, the cart with its total, and the status field of the state.
+- Inside the application shows the four roles, the user and the external services. Each numbered message of the paper's sequence diagram lights up the two boxes it connects.
+- The state shows what the State Modules hold, with the domain model and the flow status apart, and the history of applied events. Selecting an event rebuilds the state from the events up to it.
+- Settings change the latency of the simulated server, force the next request to fail, and set the speed of the animation.
+- The message trace lists every message in order, grouped by the click that caused it, with its time.
 
-The animation queue can finish after the real request. The trace includes message 11 for both loading and final renders because the paper's interface renders on every notification. In HTTP mode, server latency and failure controls are disabled because the backend controls those behaviours.
+To see the error path, add the discontinued lamp, or tick "Fail the next request" before adding a product. The animation runs from a queue, so it can finish after the real request. In HTTP mode the latency and failure settings are disabled, because the backend decides them.
 
 ## How the code is organized
 

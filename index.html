@@ -3,30 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reactive Flow Front-End showcase</title>
+    <title>Reactive Flow Front-End, a runnable example</title>
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
     <header class="page-header">
-      <p class="eyebrow">PLoP 2026 · Pattern showcase</p>
       <h1>Reactive Flow Front-End</h1>
-      <p class="muted">Follow a user action through events, state and services.</p>
+      <p class="subtitle">A runnable example for the pattern paper presented at PLoP 2026</p>
     </header>
+
+    <article class="introduction">
+      <p>
+        Reactive Flow Front-End is a design pattern for front-end applications. It
+        divides an application into four roles that talk to each other in one
+        direction only. The screen sends events down, and changes of state come
+        back up as notifications. Because information never takes a shortcut, every
+        screen the user sees can be traced back to the events that produced it.
+      </p>
+      <p>
+        This page runs the code printed in the paper, a small shopping cart, and
+        shows what happens inside it while you use it. The pattern itself is not
+        simulated. Only the server is, so that you can make it slow or make it fail.
+      </p>
+
+      <h2>The four roles</h2>
+      <dl class="roles">
+        <dt><span class="swatch role-ui"></span>Reactive Interface</dt>
+        <dd>
+          Draws the screen from the current state and turns each click into an
+          event. It never calls the server and never changes the state itself.
+        </dd>
+
+        <dt><span class="swatch role-flow"></span>Flow Orchestrator</dt>
+        <dd>
+          Receives every event and decides what happens next. It applies the event
+          to the state and, when data is needed, asks the infrastructure for it.
+        </dd>
+
+        <dt><span class="swatch role-state"></span>State Modules</dt>
+        <dd>
+          Hold the state of the application. Here that is the cart, which is the
+          domain model, and the status of the operation in progress. The state only
+          changes through pure functions, so the same events always give the same
+          state.
+        </dd>
+
+        <dt><span class="swatch role-adapter"></span>Infrastructure Adapters</dt>
+        <dd>
+          Talk to the server behind a fixed contract. The rest of the application
+          does not know which address is called or how the answer is formatted.
+        </dd>
+      </dl>
+
+      <h2>What to try</h2>
+      <ol class="steps">
+        <li>
+          Add the notebook to the cart and watch the diagram. The event goes down
+          from the interface, the state turns to loading, the request goes to the
+          server, and two notifications come back up to the screen. The message
+          trace lists all eleven messages with their timing.
+        </li>
+        <li>
+          Add the discontinued lamp. The server refuses it, the adapter turns the
+          refusal into a handled error, and the cart shows the error without
+          breaking. You can also tick "Fail the next request" and add anything.
+        </li>
+        <li>
+          In the event history, select an earlier event. The page rebuilds the state
+          by replaying the events up to that point through the paper's reducer.
+        </li>
+        <li>
+          Slow the animation down or raise the server latency to follow each step
+          at your own pace.
+        </li>
+      </ol>
+    </article>
 
     <main class="layout">
       <section class="panel shop-panel" aria-labelledby="shop-title">
-        <h2 id="shop-title">Shop <span class="role-tag role-ui">Reactive Interface</span></h2>
+        <h2 id="shop-title">The shop</h2>
+        <p class="note">
+          This is the Reactive Interface. It reports clicks and redraws itself when
+          the state changes. The buttons are disabled during loading because the
+          state says so, not because the button keeps track of it.
+        </p>
+
         <div id="catalogue"></div>
 
         <h3>Your cart</h3>
         <ul id="cart-items"></ul>
         <p id="cart-total" class="cart-total"></p>
-        <p id="flow-status-badge" class="status-badge" role="status" aria-live="polite"></p>
+        <p id="flow-status-badge" class="status-line" role="status" aria-live="polite"></p>
       </section>
 
       <section class="panel architecture-panel" aria-labelledby="architecture-title">
-        <h2 id="architecture-title">Architecture</h2>
-        <p class="muted">Each message lights up the two roles it connects.</p>
+        <h2 id="architecture-title">Inside the application</h2>
+        <p class="note">
+          The four roles of Figure 1 in the paper, with the user and the external
+          services added. Each message of Figure 2 lights up the two boxes it connects. The
+          arrow from the State Modules back to the interface is the only way
+          information travels up.
+        </p>
 
         <svg id="architecture-diagram" viewBox="0 0 480 435" role="img"
              aria-label="The four roles of the pattern. Events go down, state notifications go up.">
@@ -50,44 +127,55 @@
 
           <!-- Roles. Each box is 140 by 60, placed by its top-left corner. -->
           <g class="role role-user" data-role="user">
-            <rect x="5" y="15" width="140" height="60" rx="10" />
+            <rect x="5" y="15" width="140" height="60" rx="4" />
             <text x="75" y="50">User</text>
           </g>
           <g class="role role-ui" data-role="ui">
-            <rect x="215" y="15" width="140" height="60" rx="10" />
+            <rect x="215" y="15" width="140" height="60" rx="4" />
             <text x="285" y="41">Reactive</text>
             <text x="285" y="59">Interface</text>
           </g>
           <g class="role role-flow" data-role="flow">
-            <rect x="215" y="125" width="140" height="60" rx="10" />
+            <rect x="215" y="125" width="140" height="60" rx="4" />
             <text x="285" y="151">Flow</text>
             <text x="285" y="169">Orchestrator</text>
           </g>
           <g class="role role-state" data-role="state">
-            <rect x="35" y="245" width="140" height="60" rx="10" />
+            <rect x="35" y="245" width="140" height="60" rx="4" />
             <text x="105" y="271">State</text>
             <text x="105" y="289">Modules</text>
           </g>
           <g class="role role-adapter" data-role="adapter">
-            <rect x="295" y="245" width="140" height="60" rx="10" />
+            <rect x="295" y="245" width="140" height="60" rx="4" />
             <text x="365" y="271">Infrastructure</text>
             <text x="365" y="289">Adapters</text>
           </g>
           <g class="role role-api" data-role="api">
-            <rect x="295" y="365" width="140" height="60" rx="10" />
+            <rect x="295" y="365" width="140" height="60" rx="4" />
             <text x="365" y="391">APIs &amp;</text>
             <text x="365" y="409">Services</text>
           </g>
         </svg>
 
         <p id="animation-caption" class="animation-caption">Add a product to follow its messages.</p>
-        <p id="animation-queue" class="muted"></p>
+        <p id="animation-queue" class="note"></p>
+
+        <ul class="legend">
+          <li><span class="legend-line"></span>Call or event</li>
+          <li><span class="legend-line notification"></span>State notification, the only path up</li>
+          <li><span class="legend-line reply"></span>Reply from the server side</li>
+        </ul>
       </section>
 
       <section class="panel state-panel" aria-labelledby="state-title">
-        <h2 id="state-title">State <span class="role-tag role-state">State Modules</span></h2>
-        <p id="state-source" aria-live="polite">Live state</p>
-        <button id="back-to-live" type="button" hidden>Back to live</button>
+        <h2 id="state-title">The state</h2>
+        <p class="note">
+          What the State Modules hold, split as in Listing 1 of the paper. The cart
+          is the domain model. The status belongs to the operation in progress.
+          The part that changed last is outlined.
+        </p>
+        <p id="state-source" class="state-source" aria-live="polite">Live state</p>
+        <button id="back-to-live" type="button" hidden>Back to the live state</button>
 
         <h3>Domain model</h3>
         <pre id="domain-model"></pre>
@@ -96,13 +184,20 @@
         <pre id="flow-status"></pre>
 
         <h3>Event history</h3>
-        <p class="muted">Select an event to rebuild the state from the events up to it.</p>
+        <p class="note">
+          Every event the orchestrator applied, in order. Select one to see the state
+          rebuilt from the events up to it.
+        </p>
         <ol id="event-history"></ol>
-        <p id="event-history-empty" class="muted">No events yet.</p>
+        <p id="event-history-empty" class="note">No events yet.</p>
       </section>
 
       <section class="panel controls-panel" aria-labelledby="controls-title">
-        <h2 id="controls-title">Controls</h2>
+        <h2 id="controls-title">Settings</h2>
+        <p class="note">
+          These settings change the simulated server and the animation. They do not
+          touch the paper's code.
+        </p>
 
         <label for="latency">Server latency <output id="latency-value" for="latency">900 ms</output></label>
         <input id="latency" type="range" min="0" max="3000" step="100" value="900" />
@@ -120,14 +215,7 @@
           <option value="instant">Instant</option>
         </select>
 
-        <p id="server-mode" class="muted"></p>
-
-        <h3>Legend</h3>
-        <ul class="legend">
-          <li><span class="legend-line"></span> Call or event</li>
-          <li><span class="legend-line notification"></span> State notification, the only path upward</li>
-          <li><span class="legend-line reply"></span> Reply</li>
-        </ul>
+        <p id="server-mode" class="note"></p>
       </section>
 
       <section class="panel trace-panel" aria-labelledby="trace-title">
@@ -135,15 +223,31 @@
           <h2 id="trace-title">Message trace</h2>
           <button id="clear-trace" type="button">Clear</button>
         </div>
-        <p class="muted">Times are counted from the click that started each action.</p>
+        <p class="note">
+          Every message in the order it happened, numbered as in Figure 2 of the
+          paper, with the time since the click. Message 11 appears twice in each
+          action because the interface redraws for the loading state and again for
+          the final one.
+        </p>
         <div id="trace-groups"></div>
-        <p id="trace-empty" class="muted">No messages yet.</p>
+        <p id="trace-empty" class="note">No messages yet.</p>
       </section>
     </main>
 
-    <footer class="page-footer muted">
-      The four TypeScript listings of the paper run unchanged in src/pattern.ts.
-      Prices come from the catalogue, because the paper's cart items have none.
+    <footer class="page-footer">
+      <p>
+        The paper is "Reactive Flow Front-End: A Design Pattern for Event-Driven,
+        State-Centric Front-End Architectures", by Wilson Castro, Rossana M. C.
+        Andrade, Denise R. A. Carvalho, Tobias N. Freitas, Roberto S. R. de Meneses
+        and Gabriel B. Alves, from the Federal University of Ceará, and Pedro Almir
+        M. Oliveira, from the Federal Institute of Maranhão.
+      </p>
+      <p>
+        The source of this page is at
+        <a href="https://github.com/great-ufc/reactive-flow-front-end-demo">github.com/great-ufc/reactive-flow-front-end-demo</a>.
+        The four listings of the paper are in src/pattern.ts, unchanged. The prices
+        come from the catalogue, because the cart items in the paper have none.
+      </p>
     </footer>
 
     <script type="module" src="/src/main.ts"></script>
