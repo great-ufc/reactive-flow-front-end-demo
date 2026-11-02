@@ -1,5 +1,5 @@
-/* The page takes its colours from the four roles of the paper's figures:
-   purple for actions, blue for links and focus, green for state. */
+/* The page takes its colours from the four roles of the paper's figures.
+   Purple marks actions, blue marks links and focus, and green marks state. */
 :root {
   --role-user: #b9af8c;
   --role-ui: #9180d5;
@@ -7,6 +7,16 @@
   --role-state: #51bd8c;
   --role-adapter: #e47764;
   --role-api: #eba331;
+
+  /* Darker versions of the same hues for strokes, lines, small marks and the
+     title. Each reaches at least 3.6:1 against white, above the 3:1 minimum
+     for graphics and large text. The light originals stay as fills. */
+  --ink-user: #8e876c;
+  --ink-ui: #8b7bcc;
+  --ink-flow: #4f87da;
+  --ink-state: #40956f;
+  --ink-adapter: #cb6a59;
+  --ink-api: #b37c25;
 
   /* GREat, taken from the laboratory's logo. */
   --great-orange: #e29142;
@@ -16,12 +26,13 @@
   --surface: #f8f7f3;
   --border: #eaeaea;
   --border-strong: #d4d4d4;
+  --arrow: #8f8f8f;
   --foreground: #171717;
   --secondary: #666666;
   --accent: #3f76c9;
   --action: #7a66c7;
   --action-hover: #6552b3;
-  --error: #e5484d;
+  --error: #c62a2f;
 
   --sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
   --mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -54,7 +65,7 @@ body {
 h1 {
   width: fit-content;
   margin: 0;
-  background: linear-gradient(90deg, var(--role-ui), var(--role-flow) 55%, var(--role-state));
+  background: linear-gradient(90deg, var(--ink-ui), var(--ink-flow) 55%, var(--ink-state));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -105,6 +116,32 @@ pre {
   margin: 0 0 14px;
   color: var(--secondary);
   font-size: 0.875rem;
+}
+
+/* Hidden until it receives keyboard focus. */
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 16px;
+  z-index: 2;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* Long lists scroll inside their panel instead of stretching the page. */
+.scroll-area {
+  max-height: 420px;
+  overflow-y: auto;
 }
 
 /* Top bar, header and introduction */
@@ -212,55 +249,66 @@ pre {
 
 .roles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
   margin: 0;
 }
 
-.roles dt {
+.role-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--background);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* A bar in the role's colour that grows along the top on hover. */
+.role-card::before {
+  content: '';
+  height: 3px;
+  margin: -16px -16px 13px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(90deg, var(--role-ink) var(--bar, 30%), var(--border) var(--bar, 30%));
+  transition: --bar 0.3s ease;
+}
+
+.role-card:hover {
+  --bar: 100%;
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--role-ink) 45%, var(--border));
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--role) 22%, transparent);
+}
+
+.role-card dt {
   display: flex;
   align-items: center;
-  padding: 16px 16px 0;
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--role);
-  border-bottom: 0;
-  border-radius: 10px 10px 0 0;
   font-weight: 600;
 }
 
-.roles dd {
-  margin: 0 0 4px;
-  padding: 6px 16px 16px;
-  border: 1px solid var(--border);
-  border-top: 0;
-  border-radius: 0 0 10px 10px;
+.role-card dd {
+  margin: 6px 0 0;
   color: var(--secondary);
   font-size: 0.875rem;
 }
 
-/* The grid places each term above its description by reading order. */
-.roles dt:nth-of-type(1) { grid-area: 1 / 1; }
-.roles dd:nth-of-type(1) { grid-area: 2 / 1; }
-.roles dt:nth-of-type(2) { grid-area: 1 / 2; }
-.roles dd:nth-of-type(2) { grid-area: 2 / 2; }
-.roles dt:nth-of-type(3) { grid-area: 1 / 3; }
-.roles dd:nth-of-type(3) { grid-area: 2 / 3; }
-.roles dt:nth-of-type(4) { grid-area: 1 / 4; }
-.roles dd:nth-of-type(4) { grid-area: 2 / 4; }
+@property --bar {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 30%;
+}
 
 @media (max-width: 1050px) {
-  .roles dt,
-  .roles dd {
-    grid-area: auto !important;
+  .roles {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
+}
 
+@media (max-width: 600px) {
   .roles {
     grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .roles dd {
-    margin-bottom: 12px;
   }
 }
 
@@ -270,7 +318,12 @@ pre {
   height: 10px;
   margin-right: 10px;
   border-radius: 50%;
-  background: var(--role);
+  background: var(--role-ink);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--role-ink) 40%, transparent);
+}
+
+.role-card:hover .swatch {
+  animation: ripple 1.2s ease-out infinite;
 }
 
 .steps {
@@ -288,13 +341,13 @@ pre {
   font-size: 0.85rem;
 }
 
-/* Each role class sets --role, used by swatches, chips and diagram boxes. */
-.role-user { --role: var(--role-user); }
-.role-ui { --role: var(--role-ui); }
-.role-flow { --role: var(--role-flow); }
-.role-state { --role: var(--role-state); }
-.role-adapter { --role: var(--role-adapter); }
-.role-api { --role: var(--role-api); }
+/* Each role class sets --role for fills and --role-ink for lines and marks. */
+.role-user { --role: var(--role-user); --role-ink: var(--ink-user); }
+.role-ui { --role: var(--role-ui); --role-ink: var(--ink-ui); }
+.role-flow { --role: var(--role-flow); --role-ink: var(--ink-flow); }
+.role-state { --role: var(--role-state); --role-ink: var(--ink-state); }
+.role-adapter { --role: var(--role-adapter); --role-ink: var(--ink-adapter); }
+.role-api { --role: var(--role-api); --role-ink: var(--ink-api); }
 
 /* The running example. Three columns on wide screens, two on tablets, one on
    phones. */
@@ -401,7 +454,7 @@ button:disabled {
 }
 
 button[aria-pressed='true'] {
-  border-color: var(--role-state);
+  border-color: var(--ink-state);
   background: color-mix(in srgb, var(--role-state) 14%, var(--background));
 }
 
@@ -490,11 +543,11 @@ select {
   height: 8px;
   margin-right: 8px;
   border-radius: 50%;
-  background: var(--role-state);
+  background: var(--ink-state);
 }
 
 .status-loading::before {
-  background: var(--role-flow);
+  background: var(--ink-flow);
 }
 
 .status-error {
@@ -516,7 +569,7 @@ select {
 
 .role rect {
   fill: color-mix(in srgb, var(--role) 12%, var(--background));
-  stroke: var(--role);
+  stroke: var(--role-ink);
   stroke-width: 1.25;
   transition: fill 0.2s, stroke-width 0.2s;
 }
@@ -524,7 +577,7 @@ select {
 .role text {
   fill: var(--foreground);
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   text-anchor: middle;
 }
@@ -536,7 +589,7 @@ select {
 
 .connection {
   fill: none;
-  stroke: var(--border-strong);
+  stroke: var(--arrow);
   stroke-width: 1.5;
   transition: stroke 0.2s, stroke-width 0.2s;
 }
@@ -551,7 +604,19 @@ select {
 }
 
 .connection.notification.active {
-  stroke: var(--role-state);
+  stroke: var(--ink-state);
+}
+
+/* The dot that travels along the active arrow, the one moving mark on a
+   still diagram. */
+.message-dot {
+  fill: var(--foreground);
+  stroke: var(--background);
+  stroke-width: 2;
+}
+
+.message-dot.notification {
+  fill: var(--ink-state);
 }
 
 .animation-caption {
@@ -586,7 +651,7 @@ select {
 }
 
 .legend-line.notification {
-  border-top-color: var(--role-state);
+  border-top-color: var(--ink-state);
 }
 
 .legend-line.reply {
@@ -646,7 +711,7 @@ summary {
   height: 8px;
   margin-right: 5px;
   border-radius: 50%;
-  background: var(--role);
+  background: var(--role-ink);
 }
 
 /* State */
@@ -676,8 +741,8 @@ summary {
 }
 
 pre.changed {
-  border-color: var(--role-state);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--role-state) 22%, transparent);
+  border-color: var(--ink-state);
+  animation: changed-flash 0.9s ease-out;
 }
 
 /* Footer */
@@ -718,4 +783,89 @@ pre.changed {
   color: var(--great-blue);
   font-family: 'Montserrat', var(--sans);
   font-size: 1rem;
+}
+
+/* Motion. Each animation runs once, when something appears or changes, and
+   stays short, so that the travelling dot in the diagram remains the most
+   salient movement on the page. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes changed-flash {
+  from { box-shadow: 0 0 0 6px color-mix(in srgb, var(--role-state) 45%, transparent); }
+  to { box-shadow: 0 0 0 3px color-mix(in srgb, var(--role-state) 18%, transparent); }
+}
+
+@keyframes ripple {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--role-ink) 45%, transparent); }
+  to { box-shadow: 0 0 0 8px transparent; }
+}
+
+@keyframes pulse {
+  50% { opacity: 0.35; }
+}
+
+/* Sections fade in as they scroll into view. reveal.ts adds .animate-reveal
+   to the page and .visible to each section, so without the script nothing is
+   hidden. */
+.animate-reveal .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: calc(var(--order, 0) * 90ms);
+}
+
+.animate-reveal .reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.animate-reveal .role-card.reveal.visible {
+  transition: opacity 0.5s ease calc(var(--order, 0) * 90ms),
+    transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.trace-row,
+#event-history li,
+#cart-items li {
+  animation: slide-in 0.25s ease-out;
+}
+
+details {
+  animation: rise-in 0.3s ease-out;
+}
+
+.status-loading::before {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.product button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+/* Visitors who ask the system for less motion get none of the above. The
+   diagram still highlights each message, by colour and width alone. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .animate-reveal .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .role-card:hover {
+    transform: none;
+  }
 }

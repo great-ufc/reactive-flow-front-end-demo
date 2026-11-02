@@ -19,3 +19,7 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(
   }
   return element;
 }
+
+export function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}

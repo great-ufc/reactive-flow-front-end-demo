@@ -71,13 +71,23 @@ export class StatePanel {
     this.flowStatus.textContent = JSON.stringify({ status: state.status }, null, 2);
 
     const cartChanged = JSON.stringify(state.cart) !== JSON.stringify(before.cart);
-    this.domainModel.classList.toggle('changed', cartChanged);
-    this.flowStatus.classList.toggle('changed', state.status !== before.status);
+    markChanged(this.domainModel, cartChanged);
+    markChanged(this.flowStatus, state.status !== before.status);
   }
 
   private markPressed(count: number | null): void {
     this.eventButtons.forEach((button, index) => {
       button.setAttribute('aria-pressed', String(index + 1 === count));
     });
+  }
+}
+
+// Removing the class and reading the layout before adding it again restarts
+// the highlight animation when the same block changes twice in a row.
+function markChanged(block: HTMLElement, changed: boolean): void {
+  block.classList.remove('changed');
+  if (changed) {
+    void block.offsetWidth;
+    block.classList.add('changed');
   }
 }

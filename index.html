@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#example">Skip to the running example</a>
+
     <nav class="topbar">
       <div class="topbar-start">
         <a class="great-mark" href="https://www.great.ufc.br/">
@@ -44,31 +46,39 @@
 
       <h2>The four roles</h2>
       <dl class="roles">
-        <dt class="role-ui"><span class="swatch"></span>Reactive Interface</dt>
-        <dd>
-          Draws the screen from the current state and turns each click into an
-          event. It never calls the server and never changes the state itself.
-        </dd>
+        <div class="role-card role-ui reveal" style="--order: 0">
+          <dt><span class="swatch"></span>Reactive Interface</dt>
+          <dd>
+            Draws the screen from the current state and turns each click into an
+            event. It never calls the server and never changes the state itself.
+          </dd>
+        </div>
 
-        <dt class="role-flow"><span class="swatch"></span>Flow Orchestrator</dt>
-        <dd>
-          Receives every event and decides what happens next. It applies the event
-          to the state and, when data is needed, asks the infrastructure for it.
-        </dd>
+        <div class="role-card role-flow reveal" style="--order: 1">
+          <dt><span class="swatch"></span>Flow Orchestrator</dt>
+          <dd>
+            Receives every event and decides what happens next. It applies the event
+            to the state and, when data is needed, asks the infrastructure for it.
+          </dd>
+        </div>
 
-        <dt class="role-state"><span class="swatch"></span>State Modules</dt>
-        <dd>
-          Hold the state of the application. Here that is the cart, which is the
-          domain model, and the status of the operation in progress. The state only
-          changes through pure functions, so the same events always give the same
-          state.
-        </dd>
+        <div class="role-card role-state reveal" style="--order: 2">
+          <dt><span class="swatch"></span>State Modules</dt>
+          <dd>
+            Hold the state of the application. Here that is the cart, which is the
+            domain model, and the status of the operation in progress. The state only
+            changes through pure functions, so the same events always give the same
+            state.
+          </dd>
+        </div>
 
-        <dt class="role-adapter"><span class="swatch"></span>Infrastructure Adapters</dt>
-        <dd>
-          Talk to the server behind a fixed contract. The rest of the application
-          does not know which address is called or how the answer is formatted.
-        </dd>
+        <div class="role-card role-adapter reveal" style="--order: 3">
+          <dt><span class="swatch"></span>Infrastructure Adapters</dt>
+          <dd>
+            Talk to the server behind a fixed contract. The rest of the application
+            does not know which address is called or how the answer is formatted.
+          </dd>
+        </div>
       </dl>
 
       <h2>What to try</h2>
@@ -95,8 +105,8 @@
       </ol>
     </article>
 
-    <main class="layout">
-      <section class="panel shop-panel" aria-labelledby="shop-title">
+    <main id="example" class="layout" tabindex="-1">
+      <section class="panel shop-panel reveal" aria-labelledby="shop-title">
         <h2 id="shop-title">The shop</h2>
         <p class="note">
           This is the Reactive Interface. It reports clicks and redraws itself when
@@ -112,7 +122,7 @@
         <p id="flow-status-badge" class="status-line" role="status" aria-live="polite"></p>
       </section>
 
-      <section class="panel architecture-panel" aria-labelledby="architecture-title">
+      <section class="panel architecture-panel reveal" aria-labelledby="architecture-title">
         <h2 id="architecture-title">Inside the application</h2>
         <p class="note">
           The four roles of Figure 1 in the paper, with the user and the external
@@ -183,7 +193,7 @@
         </ul>
       </section>
 
-      <section class="panel state-panel" aria-labelledby="state-title">
+      <section class="panel state-panel reveal" aria-labelledby="state-title">
         <h2 id="state-title">The state</h2>
         <p class="note">
           What the State Modules hold, split as in Listing 1 of the paper. The cart
@@ -204,11 +214,11 @@
           Every event the orchestrator applied, in order. Select one to see the state
           rebuilt from the events up to it.
         </p>
-        <ol id="event-history"></ol>
+        <ol id="event-history" class="scroll-area" tabindex="0" aria-label="Event history"></ol>
         <p id="event-history-empty" class="note">No events yet.</p>
       </section>
 
-      <section class="panel controls-panel" aria-labelledby="controls-title">
+      <section class="panel controls-panel reveal" aria-labelledby="controls-title">
         <h2 id="controls-title">Settings</h2>
         <p class="note">
           These settings change the simulated server and the animation. They do not
@@ -234,7 +244,7 @@
         <p id="server-mode" class="note"></p>
       </section>
 
-      <section class="panel trace-panel" aria-labelledby="trace-title">
+      <section class="panel trace-panel reveal" aria-labelledby="trace-title">
         <div class="panel-heading">
           <h2 id="trace-title">Message trace</h2>
           <button id="clear-trace" type="button">Clear</button>
@@ -245,7 +255,7 @@
           action because the interface redraws for the loading state and again for
           the final one.
         </p>
-        <div id="trace-groups"></div>
+        <div id="trace-groups" class="scroll-area" tabindex="0" aria-label="Message trace"></div>
         <p id="trace-empty" class="note">No messages yet.</p>
       </section>
     </main>

@@ -6,6 +6,7 @@ import { ControlsPanel } from './panels/controls-panel';
 import { ShopPanel } from './panels/shop-panel';
 import { StatePanel } from './panels/state-panel';
 import { TracePanel } from './panels/trace-panel';
+import { revealOnScroll } from './reveal';
 import { InMemoryCartServer } from './server';
 import { Trace } from './trace';
 
@@ -47,3 +48,5 @@ const cartButton = createCartButton(store, flow);
 // drawn here.
 shop.show(store.getState(), '');
 statePanel.showLive(store.getState());
+
+revealOnScroll();
