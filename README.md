@@ -28,3 +28,18 @@ Shop shows the catalogue, cart, total and live flow status. Architecture follows
 Add Discontinued lamp, or select Fail the next request before adding another product, to see the error path. Select an event in Event history to see the state rebuilt by folding the paper's reducer over events 1..k. Back to live returns to the current state. The cart continues to show live state while the state panel shows a past transition. Clearing the message trace leaves event history intact.
 
 The animation queue can finish after the real request. The trace includes message 11 for both loading and final renders because the paper's interface renders on every notification. In HTTP mode, server latency and failure controls are disabled because the backend controls those behaviours.
+
+## How the code is organized
+
+The file src/pattern.ts holds the paper's four listings and nothing else of substance. Everything around it only observes the paper's code or draws what it observes.
+
+- index.html holds the page and the architecture diagram, written as plain HTML and SVG.
+- src/main.ts connects the pieces. It is the place to start reading.
+- src/messages.ts lists the roles and the eleven numbered messages of the paper's sequence diagram.
+- src/trace.ts records each message as it happens and passes it to the panels.
+- src/instrumentation.ts wraps the paper's store, orchestrator and repository so that each call records its message, and then runs the original code.
+- src/server.ts plays the external service, with the latency and the forced failure set in Controls.
+- src/history.ts keeps the applied events and rebuilds a state from any prefix of them.
+- src/catalogue.ts holds the products and their prices.
+- src/panels/ holds one file per panel of the page.
+

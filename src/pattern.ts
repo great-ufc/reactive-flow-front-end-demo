@@ -1,8 +1,11 @@
 // The four listings of the paper Reactive Flow Front-End, in the order they appear there.
 // The paper's interface calls render without defining it, so the page supplies it through setRender.
 
-let render: (state: any) => void = () => {};
-export function setRender(fn: (state: CartState) => void): void { render = fn; }
+let render: (state: CartState) => void = () => {};
+
+export function setRender(fn: (state: CartState) => void): void {
+  render = fn;
+}
 
 // Domain model: the cart and the rules that apply to it
 interface CartItem { id: string; name: string; }

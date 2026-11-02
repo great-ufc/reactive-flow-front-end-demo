@@ -7,7 +7,145 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <div id="app"></div>
+    <header class="page-header">
+      <p class="eyebrow">PLoP 2026 · Pattern showcase</p>
+      <h1>Reactive Flow Front-End</h1>
+      <p class="muted">Follow a user action through events, state and services.</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel shop-panel" aria-labelledby="shop-title">
+        <h2 id="shop-title">Shop <span class="role-tag role-ui">Reactive Interface</span></h2>
+        <div id="catalogue"></div>
+
+        <h3>Your cart</h3>
+        <ul id="cart-items"></ul>
+        <p id="cart-total" class="cart-total"></p>
+        <p id="flow-status-badge" class="status-badge" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel architecture-panel" aria-labelledby="architecture-title">
+        <h2 id="architecture-title">Architecture</h2>
+        <p class="muted">Each message lights up the two roles it connects.</p>
+
+        <svg id="architecture-diagram" viewBox="0 0 480 435" role="img"
+             aria-label="The four roles of the pattern. Events go down, state notifications go up.">
+          <defs>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="context-stroke" />
+            </marker>
+          </defs>
+
+          <!-- Arrows. data-messages lists the numbered messages that use each arrow. -->
+          <path class="connection" data-messages="1" d="M145 45 H210" marker-end="url(#arrowhead)" />
+          <path class="connection" data-messages="11" d="M210 60 H145" marker-end="url(#arrowhead)" />
+          <path class="connection" data-messages="2" d="M285 75 V125" marker-end="url(#arrowhead)" />
+          <path class="connection" data-messages="3 9" d="M235 185 L130 245" marker-end="url(#arrowhead)" />
+          <path class="connection notification" data-messages="4 10" d="M75 245 V105 H225 V75" marker-end="url(#arrowhead)" />
+          <path class="connection" data-messages="5" d="M330 185 L365 245" marker-end="url(#arrowhead)" />
+          <path class="connection reply" data-messages="8" d="M405 245 L350 185" marker-end="url(#arrowhead)" />
+          <path class="connection" data-messages="6" d="M350 305 V365" marker-end="url(#arrowhead)" />
+          <path class="connection reply" data-messages="7" d="M385 365 V305" marker-end="url(#arrowhead)" />
+
+          <!-- Roles. Each box is 140 by 60, placed by its top-left corner. -->
+          <g class="role role-user" data-role="user">
+            <rect x="5" y="15" width="140" height="60" rx="10" />
+            <text x="75" y="50">User</text>
+          </g>
+          <g class="role role-ui" data-role="ui">
+            <rect x="215" y="15" width="140" height="60" rx="10" />
+            <text x="285" y="41">Reactive</text>
+            <text x="285" y="59">Interface</text>
+          </g>
+          <g class="role role-flow" data-role="flow">
+            <rect x="215" y="125" width="140" height="60" rx="10" />
+            <text x="285" y="151">Flow</text>
+            <text x="285" y="169">Orchestrator</text>
+          </g>
+          <g class="role role-state" data-role="state">
+            <rect x="35" y="245" width="140" height="60" rx="10" />
+            <text x="105" y="271">State</text>
+            <text x="105" y="289">Modules</text>
+          </g>
+          <g class="role role-adapter" data-role="adapter">
+            <rect x="295" y="245" width="140" height="60" rx="10" />
+            <text x="365" y="271">Infrastructure</text>
+            <text x="365" y="289">Adapters</text>
+          </g>
+          <g class="role role-api" data-role="api">
+            <rect x="295" y="365" width="140" height="60" rx="10" />
+            <text x="365" y="391">APIs &amp;</text>
+            <text x="365" y="409">Services</text>
+          </g>
+        </svg>
+
+        <p id="animation-caption" class="animation-caption">Add a product to follow its messages.</p>
+        <p id="animation-queue" class="muted"></p>
+      </section>
+
+      <section class="panel state-panel" aria-labelledby="state-title">
+        <h2 id="state-title">State <span class="role-tag role-state">State Modules</span></h2>
+        <p id="state-source" aria-live="polite">Live state</p>
+        <button id="back-to-live" type="button" hidden>Back to live</button>
+
+        <h3>Domain model</h3>
+        <pre id="domain-model"></pre>
+
+        <h3>Flow status</h3>
+        <pre id="flow-status"></pre>
+
+        <h3>Event history</h3>
+        <p class="muted">Select an event to rebuild the state from the events up to it.</p>
+        <ol id="event-history"></ol>
+        <p id="event-history-empty" class="muted">No events yet.</p>
+      </section>
+
+      <section class="panel controls-panel" aria-labelledby="controls-title">
+        <h2 id="controls-title">Controls</h2>
+
+        <label for="latency">Server latency <output id="latency-value" for="latency">900 ms</output></label>
+        <input id="latency" type="range" min="0" max="3000" step="100" value="900" />
+
+        <label class="checkbox">
+          <input id="fail-next" type="checkbox" />
+          Fail the next request
+        </label>
+
+        <label for="animation-speed">Animation speed</label>
+        <select id="animation-speed">
+          <option value="slow">Slow</option>
+          <option value="normal" selected>Normal</option>
+          <option value="fast">Fast</option>
+          <option value="instant">Instant</option>
+        </select>
+
+        <p id="server-mode" class="muted"></p>
+
+        <h3>Legend</h3>
+        <ul class="legend">
+          <li><span class="legend-line"></span> Call or event</li>
+          <li><span class="legend-line notification"></span> State notification, the only path upward</li>
+          <li><span class="legend-line reply"></span> Reply</li>
+        </ul>
+      </section>
+
+      <section class="panel trace-panel" aria-labelledby="trace-title">
+        <div class="panel-heading">
+          <h2 id="trace-title">Message trace</h2>
+          <button id="clear-trace" type="button">Clear</button>
+        </div>
+        <p class="muted">Times are counted from the click that started each action.</p>
+        <div id="trace-groups"></div>
+        <p id="trace-empty" class="muted">No messages yet.</p>
+      </section>
+    </main>
+
+    <footer class="page-footer muted">
+      The four TypeScript listings of the paper run unchanged in src/pattern.ts.
+      Prices come from the catalogue, because the paper's cart items have none.
+    </footer>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
